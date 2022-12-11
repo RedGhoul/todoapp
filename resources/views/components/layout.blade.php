@@ -45,15 +45,15 @@
                         </span>
                             </li>
                             <li>
-                                <a href="/login" class="hover:text-laravel"
+                                <a href="/todo/all" class="hover:text-laravel"
                                 ><i class="fa-solid fa-gear"></i>
-                                    Manage Listings</a
+                                    Manage Todos</a
                                 >
                             </li>
                             <li>
                                 <form class="inline" method="POST" action="/logout">
                                     @csrf
-                                    <button type="submit">
+                                    <button class="btn-large" type="submit">
                                         <i class="fa-solid fa-door-closed"></i>Logout
                                     </button>
                                 </form>

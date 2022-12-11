@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('todos', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('title');
             $table->text('content');
             $table->foreignId('user_id')->index()->nullable()->references('id')->on('users')->nullOnDelete();

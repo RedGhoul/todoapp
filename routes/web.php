@@ -16,24 +16,27 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[\App\Http\Controllers\HomeController::class, 'index']);
 
 Route::prefix('todo')->group(function(){
+
+    Route::get('/all', [\App\Http\Controllers\TodoController::class, 'index']);
+
     //Create Form
-    Route::get('/create', [\App\Http\Controllers\TodoController::class, 'create'])->middleware('auth');
+    Route::get('/create', [\App\Http\Controllers\TodoController::class, 'create']);
 
     // Store listing data
-    Route::post('/', [\App\Http\Controllers\TodoController::class, 'store'])->middleware('auth');
+    Route::post('/', [\App\Http\Controllers\TodoController::class, 'store']);
 
     Route::get('/{todo}', [\App\Http\Controllers\TodoController::class, 'show']);
 
     // Show Edit Form
-    Route::get('/{todo}/edit', [\App\Http\Controllers\TodoController::class, 'edit'])->middleware('auth');
+    Route::get('/{todo}/edit', [\App\Http\Controllers\TodoController::class, 'edit']);
 
     // Update listing
-    Route::put('/{todo}', [\App\Http\Controllers\TodoController::class, 'update'])->middleware('auth');
+    Route::put('/{todo}', [\App\Http\Controllers\TodoController::class, 'update']);
 
     // delete listing
-    Route::delete('/{todo}', [\App\Http\Controllers\TodoController::class, 'destroy'])->middleware('auth');
+    Route::delete('/{todo}', [\App\Http\Controllers\TodoController::class, 'destroy']);
 
-});
+})->middleware('auth');
 
 Route::get('/register', [\App\Http\Controllers\UserController::class, 'create'])->middleware('guest');
 

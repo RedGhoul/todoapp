@@ -3,98 +3,75 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
-use App\Http\Requests\StoreTodoRequest;
-use App\Http\Requests\UpdateTodoRequest;
 
 class TodoController extends Controller
 {
     public function index(){
-        return view('listings.index', [
-            'heading' => 'Latest Listings',
-            'listings' => Listing::latest()
-                ->filter(request(['tag','search']))->paginate(12)
+        return view('todo.index', [
+            'heading' => 'Latest todo',
+            'todos' => Todo::latest()
+                ->filter(request(['tag','search']))->where('user_id', '=', auth()->id())->paginate(12)
         ]);
     }
 
-    public function show(Listing $listing){
-        return view('listings.show', [
-            'listing' =>  $listing
+    public function show(Todo $todo){
+        return view('todo.show', [
+            'todo' =>  $todo
         ]);
     }
 
     // show create form
-    public function create(Listing $listing){
-        return view('listings.create');
+    public function create(Todo $todo){
+        return view('todo.create');
     }
 
     // store
     public function store(){
-
+        $formFields['user_id'] = auth()->id();
         $formFields = request()->validate([
             'title' => 'required',
-            'company' => ['required', Rule::unique('listings', 'company')],
-            'location' => 'required',
-            'website' => 'required',
-            'email' => ['required','email'],
-            'tags' => 'required',
-            'description' => 'required',
+            'content' => 'required',
+            'user_id' => 'user_id',
         ]);
 
-
-        if(request()->hasFile('logo')){
-            $formFields['logo'] = request()->file('logo')->store('logos','public');
-        }
-
-        $formFields['user_id'] = auth()->id();
-
-        Listing::create($formFields);
+        Todo::create($formFields);
 
         return redirect('/')
             // how to add a flash message
-            ->with('message', 'Listing created successfully!');
+            ->with('message', 'Todo created successfully!');
     }
 
     //show edit form
-    public function edit(Listing $listing){
-        if($listing->user_id != auth()->id()){
+    public function edit(Todo $todo){
+        if($todo->user_id != auth()->id()){
             abort(403,'Unauthorized Action');
         }
-        return view('listings.edit',['listing' => $listing]);
+        return view('todo.edit',['todo' => $todo]);
     }
 
     // update
-    public function update(Listing $listing){
-        if($listing->user_id != auth()->id()){
+    public function update(Todo $todo){
+        if($todo->user_id != auth()->id()){
             abort(403,'Unauthorized Action');
         }
         $formFields = request()->validate([
             'title' => 'required',
-            'company' => ['required'],
-            'location' => 'required',
-            'website' => 'required',
-            'email' => ['required','email'],
-            'tags' => 'required',
-            'description' => 'required',
+            'content' => 'required',
         ]);
 
-
-        if(request()->hasFile('logo')){
-            $formFields['logo'] = request()->file('logo')->store('logos','public');
-        }
-
-        $listing->update($formFields);
+        $todo->update($formFields);
 
         return back()
             // how to add a flash message
-            ->with('message', 'Listing updated successfully!');
+            ->with('message', 'Todo updated successfully!');
     }
 
     //delete
-    public function destroy(Listing $listing){
-        if($listing->user_id != auth()->id()){
+    public function destroy(Todo $todo){
+        if($todo->user_id != auth()->id()){
             abort(403,'Unauthorized Action');
         }
-        $listing->delete();
-        return redirect('/')->with('message', 'Listing deleted successfully!');
+        $todo->delete();
+        return redirect('/')->with('message', 'Todo deleted successfully!');
     }
 }

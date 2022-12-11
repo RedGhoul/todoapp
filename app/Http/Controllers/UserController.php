@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -14,7 +15,7 @@ class UserController extends Controller
     public function store(){
         $formFields = request()->validate([
             'name' =>  ['required','min:3'],
-            'email' => ['required','email', Rule::unique('listings', 'company')],
+            'email' => ['required','email', Rule::unique('users', 'email')],
             'password' => ['required', 'confirmed', 'min:6'],
         ]);
 
