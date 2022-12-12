@@ -34,76 +34,84 @@
 </head>
     <body>
 
-    <nav>
-        <div class="nav-wrapper">
-            <a href="#" class="brand-logo">Todoisty</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                @auth
-                    <li>
-                        <span class="font-bold uppercase">
-                            Welcome {{auth()->user()->name}}
-                        </span>
-                            </li>
-                            <li>
-                                <a href="/todo/all" class="hover:text-laravel"
-                                ><i class="fa-solid fa-gear"></i>
-                                    Manage Todos</a
-                                >
-                            </li>
-                            <li>
-                                <form class="inline" method="POST" action="/logout">
-                                    @csrf
-                                    <button class="btn-large" type="submit">
-                                        <i class="fa-solid fa-door-closed"></i>Logout
-                                    </button>
-                                </form>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="/" class="brand-logo">Todoisty</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    @auth
+                                <li>
+                                    <span class="font-bold uppercase">
+                                        Welcome {{auth()->user()->name}}
+                                    </span>
+                                </li>
+                                <li>
+                                    <a href="/todo/all" class="hover:text-laravel">
+                                        <i class="fa-solid fa-gear"></i>
+                                        Manage Todos
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/todo/create" class="hover:text-laravel">
+                                        <i class="fa-solid fa-gear"></i>Create Todo
+                                    </a>
+                                </li>
+                                <li>
+                                    <form class="inline" method="POST" action="/logout">
+                                        @csrf
+                                        <button class="btn-large" type="submit">
+                                            <i class="fa-solid fa-door-closed"></i>Logout
+                                        </button>
+                                    </form>
+                                </li>
+                    @else
+                        <li>
+                            <a href="/register" class="hover:text-laravel">
+                                <i class="fa-solid fa-user-plus"></i> Register
+                            </a>
                         </li>
-                @else
-                    <li>
-                        <a href="/register" class="hover:text-laravel"
-                        ><i class="fa-solid fa-user-plus"></i> Register</a
-                        >
-                    </li>
-                    <li>
-                        <a href="/login" class="hover:text-laravel"
-                        ><i class="fa-solid fa-arrow-right-to-bracket"></i>
-                            Login</a
-                        >
-                    </li>
-                @endauth
-            </ul>
-        </div>
-    </nav>
-
-
-    <main style="padding-bottom: 30rem">
-        {{$slot}}
-    </main>
-    <footer class="page-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col l6 s12">
-                    <h5 class="white-text">Start Now</h5>
-                    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-                </div>
-                <div class="col l4 offset-l2 s12">
-                    <h5 class="white-text">Links</h5>
-                    <ul>
-                        <li><a class="grey-text text-lighten-3" href="#!">Legal</a></li>
-                        <li><a class="grey-text text-lighten-3" href="#!">About</a></li>
-                        <li><a class="grey-text text-lighten-3" href="#!">Pricing</a></li>
-                        <li><a class="grey-text text-lighten-3" href="#!"></a></li>
-                    </ul>
-                </div>
+                        <li>
+                            <a href="/login" class="hover:text-laravel">
+                                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                                Login
+                            </a>
+                        </li>
+                    @endauth
+                </ul>
             </div>
-        </div>
-        <div class="footer-copyright">
+        </nav>
+
+
+        <main style="padding-bottom: 30rem">
+            {{$slot}}
+        </main>
+        <footer class="page-footer">
             <div class="container">
-                © 2014 Copyright Todoisty
-                <a class="grey-text text-lighten-4 right" href="https://www.avaneesa.com/"  target="_blank">Find more here</a>
+                <div class="row">
+                    <div class="col l6 s12">
+                        <h5 class="white-text">Start Now</h5>
+                        <ul>
+                            <li><a class="grey-text text-lighten-3" href="/login">Login</a></li>
+                            <li><a class="grey-text text-lighten-3" href="/register">Register</a></li>
+                        </ul>
+                    </div>
+                    <div class="col l4 offset-l2 s12">
+                        <h5 class="white-text">Links</h5>
+                        <ul>
+                            <li><a class="grey-text text-lighten-3" href="#!">Legal</a></li>
+                            <li><a class="grey-text text-lighten-3" href="#!">About</a></li>
+                            <li><a class="grey-text text-lighten-3" href="#!">Pricing</a></li>
+                            <li><a class="grey-text text-lighten-3" href="#!"></a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-    </footer>
+            <div class="footer-copyright">
+                <div class="container">
+                    © 2014 Copyright Todoisty
+                    <a class="grey-text text-lighten-4 right" href="https://www.avaneesa.com/"  target="_blank">Find more here</a>
+                </div>
+            </div>
+        </footer>
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="//unpkg.com/alpinejs" defer></script>

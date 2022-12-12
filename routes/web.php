@@ -22,19 +22,19 @@ Route::prefix('todo')->group(function(){
     //Create Form
     Route::get('/create', [\App\Http\Controllers\TodoController::class, 'create']);
 
-    // Store listing data
-    Route::post('/', [\App\Http\Controllers\TodoController::class, 'store']);
+    // Store todo data
+    Route::post('/store', [\App\Http\Controllers\TodoController::class, 'store']);
 
-    Route::get('/{todo}', [\App\Http\Controllers\TodoController::class, 'show']);
+    Route::get('/{todo_id}/show', [\App\Http\Controllers\TodoController::class, 'show']);
 
     // Show Edit Form
-    Route::get('/{todo}/edit', [\App\Http\Controllers\TodoController::class, 'edit']);
+    Route::get('/{todo_id}/edit', [\App\Http\Controllers\TodoController::class, 'edit']);
 
     // Update listing
-    Route::put('/{todo}', [\App\Http\Controllers\TodoController::class, 'update']);
+    Route::put('/{todo_id}/update', [\App\Http\Controllers\TodoController::class, 'update']);
 
     // delete listing
-    Route::delete('/{todo}', [\App\Http\Controllers\TodoController::class, 'destroy']);
+    Route::delete('/{todo_id}/destroy', [\App\Http\Controllers\TodoController::class, 'destroy']);
 
 })->middleware('auth');
 

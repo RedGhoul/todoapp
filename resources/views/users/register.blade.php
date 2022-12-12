@@ -1,5 +1,5 @@
 <x-layout>
-    <x-card class="container">
+    <div class="container">
         <header class="text-center">
             <h2 class="text-2xl font-bold uppercase mb-1">
                 Register
@@ -78,8 +78,6 @@
                     Sign In
                 </button>
             </div>
-
-
         </form>
-    </x-card>
+    </div>
 </x-layout>

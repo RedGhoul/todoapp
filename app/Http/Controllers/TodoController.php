@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
+use Illuminate\Support\Str;
 
 class TodoController extends Controller
 {
@@ -10,14 +11,20 @@ class TodoController extends Controller
         return view('todo.index', [
             'heading' => 'Latest todo',
             'todos' => Todo::latest()
-                ->filter(request(['tag','search']))->where('user_id', '=', auth()->id())->paginate(12)
+                ->filter(request(['keyword']))
+                ->where('user_id', '=', auth()->id())->paginate(12)
         ]);
     }
 
-    public function show(Todo $todo){
-        return view('todo.show', [
-            'todo' =>  $todo
-        ]);
+    public function show($todo_id){
+        $todo = Todo::where('id', '=',$todo_id)->where('user_id', '=',auth()->id())->first();
+        if($todo){
+            return view('todo.edit', [
+                'todo' => $todo
+            ]);
+        }
+        return redirect('/todo/all')
+            ->with('message', 'Could not find todo with id ' . $todo_id);
     }
 
     // show create form
@@ -27,51 +34,65 @@ class TodoController extends Controller
 
     // store
     public function store(){
-        $formFields['user_id'] = auth()->id();
+
         $formFields = request()->validate([
             'title' => 'required',
             'content' => 'required',
-            'user_id' => 'user_id',
         ]);
+
+        $formFields['user_id'] = auth()->id();
 
         Todo::create($formFields);
 
-        return redirect('/')
+        return redirect('/todo/all')
             // how to add a flash message
             ->with('message', 'Todo created successfully!');
     }
 
     //show edit form
-    public function edit(Todo $todo){
-        if($todo->user_id != auth()->id()){
-            abort(403,'Unauthorized Action');
+    public function edit($todo_id)
+    {
+        $todo = auth()->user()->todos()->where('id', '=',$todo_id)->first();
+
+        if( $todo){
+            return view('todo.edit',['todo' => $todo]);
+
         }
-        return view('todo.edit',['todo' => $todo]);
+        return redirect('/')
+            // how to add a flash message
+            ->with('message', 'Todo was not found !');
     }
 
     // update
-    public function update(Todo $todo){
-        if($todo->user_id != auth()->id()){
-            abort(403,'Unauthorized Action');
+    public function update($todo_id){
+        $todo = auth()->user()->todos()->where('id', '=',$todo_id)->first();
+
+        if($todo){
+            $formFields = request()->validate([
+                'title' => 'required',
+                'content' => 'required',
+            ]);
+
+            $todo->update($formFields);
+            return redirect('/todo/all')
+                ->with('message', 'Todo updated successfully!');
         }
-        $formFields = request()->validate([
-            'title' => 'required',
-            'content' => 'required',
-        ]);
 
-        $todo->update($formFields);
-
-        return back()
+        return redirect('/')
             // how to add a flash message
-            ->with('message', 'Todo updated successfully!');
+            ->with('message', 'Todo was not found !');
     }
 
     //delete
-    public function destroy(Todo $todo){
-        if($todo->user_id != auth()->id()){
-            abort(403,'Unauthorized Action');
+    public function destroy($todo_id){
+        $todo = auth()->user()->todos()->where('id','=',$todo_id)->first();
+        ddd($todo);
+        if($todo){
+            $todo->delete();
+            return redirect('/')->with('message', 'Todo deleted successfully!');
         }
-        $todo->delete();
-        return redirect('/')->with('message', 'Todo deleted successfully!');
+        return redirect('/')
+            // how to add a flash message
+            ->with('message', 'Todo was not found !');
     }
 }
